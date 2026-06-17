@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Login - Digital Marketing Student Portfolio">
+    <title>Admin Login | Digital Marketing Portfolio</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS (Shares some global variables and base styling) -->
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* Specific login styling */
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem 0;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-alt) 100%);
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 0 1.5rem;
+        }
+        
+        .login-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-card-border);
+            border-radius: var(--border-radius-md);
+            padding: 3rem 2.5rem;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        .login-logo {
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+        
+        .login-header h1 {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-header p {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            margin-bottom: 2.2rem;
+        }
+        
+        .login-form {
+            text-align: left;
+        }
+        
+        .form-feedback {
+            background: rgba(244, 63, 94, 0.1);
+            border: 1px solid rgba(244, 63, 94, 0.2);
+            color: var(--secondary-color);
+            padding: 0.8rem 1rem;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+            line-height: 1.4;
+        }
+        
+        .form-feedback.active {
+            display: flex;
+        }
+        
+        .form-group-login {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group-login label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--color-text-muted);
+            margin-bottom: 0.5rem;
+        }
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-muted);
+            font-size: 1rem;
+        }
+        
+        .input-wrapper input {
+            width: 100%;
+            background: var(--bg-primary);
+            border: 1px solid var(--bg-card-border);
+            color: var(--color-text);
+            padding: 0.9rem 1.2rem 0.9rem 2.8rem;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.95rem;
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+        }
+        
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.8rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-text-muted);
+        }
+        
+        .back-link:hover {
+            color: var(--primary-color);
+        }
+        
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+            pointer-events: none;
+        }
+        
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 0.8s infinite linear;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-card">
+            
+            <a href="index.html" class="login-logo logo">
+                <span class="gradient-text">Alex</span>Marketing
+            </a>
+            
+            <div class="login-header">
+                <h1>Admin Login</h1>
+                <p>Log in to update your portfolio settings</p>
+            </div>
+            
+            <!-- Error Feedback Box -->
+            <div id="loginFeedback" class="form-feedback">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span id="feedbackMessage">Invalid email or password.</span>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="loginForm" class="login-form" novalidate>
+                <div class="form-group-login">
+                    <label for="loginEmail">Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" id="loginEmail" placeholder="name@domain.com" required>
+                    </div>
+                </div>
+                
+                <div class="form-group-login">
+                    <label for="loginPassword">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                    </div>
+                </div>
+                
+                <button type="submit" id="loginSubmitBtn" class="btn btn-primary btn-block">
+                    Log In <i class="fa-solid fa-right-to-bracket"></i>
+                </button>
+            </form>
+            
+            <a href="index.html" class="back-link">
+                <i class="fa-solid fa-arrow-left-long"></i> Back to Live Portfolio
+            </a>
+            
+        </div>
+    </div>
+
+    <!-- ==========================================
+         FIREBASE CORE SDKS (COMPAT MODE)
+         ========================================== -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase configuration -->
+    <script src="firebase-config.js"></script>
+    
+    <!-- Login Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('loginForm');
+            const loginFeedback = document.getElementById('loginFeedback');
+            const feedbackMessage = document.getElementById('feedbackMessage');
+            const loginSubmitBtn = document.getElementById('loginSubmitBtn');
+            
+            // Dynamic Logo Name Injection
+            if (isFirebaseConfigured && db) {
+                db.collection('students').doc(STUDENT_ID).get().then(doc => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.name) {
+                            const firstName = data.name.split(' ')[0];
+                            const lastName = data.name.split(' ').slice(1).join(' ') || 'Marketing';
+                            const logoEl = document.querySelector('.login-logo');
+                            if (logoEl) {
+                                logoEl.innerHTML = `<span class="gradient-text">${firstName}</span>${lastName}`;
+                            }
+                        }
+                    }
+                }).catch(err => console.error("Error loading logo name: ", err));
+            }
+
+            // Auth State Change - If already logged in, redirect to admin.html
+            if (isFirebaseConfigured && auth) {
+                auth.onAuthStateChanged(user => {
+                    if (user) {
+                        window.location.href = 'admin.html';
+                    }
+                });
+            } else {
+                showError("Firebase configuration is missing in firebase-config.js. Please configure Firebase to enable Login.");
+                loginSubmitBtn.disabled = true;
+            }
+            
+            // Handle Login Form Submission
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const email = document.getElementById('loginEmail').value.trim();
+                const password = document.getElementById('loginPassword').value.trim();
+                
+                // Client-side quick check
+                if (!email || !password) {
+                    showError("Please enter both email and password.");
+                    return;
+                }
+                
+                // Start loading animation
+                hideError();
+                loginSubmitBtn.classList.add('btn-loading');
+                
+                auth.signInWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        // Success - Firebase Auth State observer will handle redirection
+                        console.log("Logged in successfully.");
+                    })
+                    .catch((error) => {
+                        loginSubmitBtn.classList.remove('btn-loading');
+                        console.error("Login failed: ", error);
+                        
+                        // Parse user-friendly error messages
+                        let userFriendlyMessage = "Invalid email or password.";
+                        if (error.code === 'auth/invalid-email') {
+                            userFriendlyMessage = "The email address is badly formatted.";
+                        } else if (error.code === 'auth/user-disabled') {
+                            userFriendlyMessage = "This user account has been disabled.";
+                        } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+                            userFriendlyMessage = "Invalid email or password.";
+                        } else {
+                            userFriendlyMessage = error.message;
+                        }
+                        
+                        showError(userFriendlyMessage);
+                    });
+            });
+            
+            function showError(msg) {
+                feedbackMessage.textContent = msg;
+                loginFeedback.classList.add('active');
+            }
+            
+            function hideError() {
+                loginFeedback.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
