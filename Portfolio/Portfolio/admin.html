@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Dashboard - Digital Marketing Student Portfolio">
+    <title>Admin Dashboard | Digital Marketing Portfolio</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Admin styling -->
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+    <!-- Global Loading Overlay -->
+    <div id="globalLoading" class="loading-overlay active">
+        <div class="spinner-box">
+            <div class="spinner"></div>
+            <p>Loading Dashboard Data...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="confirm-modal">
+        <div class="confirm-modal-content">
+            <div class="warn-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+            <h2>Confirm Deletion</h2>
+            <p>Are you sure you want to delete this item? This action is permanent and cannot be undone.</p>
+            <div class="confirm-buttons">
+                <button id="cancelDeleteBtn" class="btn-admin btn-admin-secondary">Cancel</button>
+                <button id="confirmDeleteBtn" class="btn-admin btn-admin-danger">Yes, Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Layout Wrapper -->
+    <div class="dashboard-wrapper">
+        
+        <!-- ==========================================
+             SIDEBAR NAVIGATION
+             ========================================== -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" target="_blank" class="sidebar-logo" id="adminSidebarLogo">
+                    <span>Alex</span>Marketing
+                </a>
+                <div class="admin-profile-summary">
+                    <img id="sidebarAvatar" src="assets/images/placeholder.jpg" alt="Admin Avatar" class="sidebar-avatar" onerror="this.src='assets/images/placeholder.jpg'; this.onerror=null;">
+                    <div class="profile-info">
+                        <h4 id="sidebarName">Alex Morgan</h4>
+                        <span class="role-badge">Portfolio Owner</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <button class="nav-tab-btn active" data-tab="tab-profile">
+                            <i class="fa-solid fa-user-gear"></i> Profile Settings
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-tab-btn" data-tab="tab-skills">
+                            <i class="fa-solid fa-sliders"></i> Skills & Tools
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-tab-btn" data-tab="tab-projects">
+                            <i class="fa-solid fa-folder-open"></i> Projects / Work
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-tab-btn" data-tab="tab-certificates">
+                            <i class="fa-solid fa-medal"></i> Certifications
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-tab-btn" data-tab="tab-cv">
+                            <i class="fa-solid fa-file-pdf"></i> CV Management
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-tab-btn" data-tab="tab-socials">
+                            <i class="fa-solid fa-share-nodes"></i> Contact & Socials
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-tab-btn" data-tab="tab-experience">
+                            <i class="fa-solid fa-briefcase"></i> Experience
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-tab-btn" data-tab="tab-testimonials">
+                            <i class="fa-solid fa-comments"></i> Testimonials
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-tab-btn" data-tab="tab-templates">
+                            <i class="fa-solid fa-palette"></i> Choose Design
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i> Log Out
+                </button>
+            </div>
+        </aside>
+
+        <!-- ==========================================
+             MAIN CONTENT WINDOW
+             ========================================== -->
+        <main class="admin-main">
+            
+            <!-- Topbar Panel Header -->
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <h2 id="currentTabTitle">Profile Settings</h2>
+                </div>
+                <div class="topbar-right">
+                    <span id="userEmailDisplay" class="user-email">admin@domain.com</span>
+                    <a href="index.html" target="_blank" class="btn-admin btn-admin-outline">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Live Site
+                    </a>
+                </div>
+            </header>
+
+            <!-- Scrollable Tab Container -->
+            <div class="admin-content-container">
+
+                <!-- ------------------------------------------
+                     TAB 1: PROFILE SETTINGS
+                     ------------------------------------------ -->
+                <div id="tab-profile" class="tab-pane active">
+                    <div class="dashboard-grid">
+                        <!-- Left Side Forms -->
+                        <div class="dashboard-card card-col-8">
+                            <div class="card-header">
+                                <h3>General Information</h3>
+                                <p>These details are used in your website's Hero and About sections.</p>
+                            </div>
+                            <form id="profileForm" class="dashboard-form">
+                                <div class="form-row-2">
+                                    <div class="admin-form-group">
+                                        <label for="profileName">Full Name</label>
+                                        <input type="text" id="profileName" placeholder="Alex Morgan" required>
+                                    </div>
+                                    <div class="admin-form-group">
+                                        <label for="profileTitle">Portfolio Title</label>
+                                        <input type="text" id="profileTitle" placeholder="Digital Marketing Student" required>
+                                    </div>
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="profileBio">Short Bio (Hero Description)</label>
+                                    <textarea id="profileBio" rows="3" placeholder="A results-driven marketing student specializing in data-backed strategies..." required></textarea>
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="profileAbout">About Me (Full Story)</label>
+                                    <textarea id="profileAbout" rows="5" placeholder="I am currently studying digital marketing and applying industry-standard strategies to real-world scenarios..." required></textarea>
+                                </div>
+                                <div class="form-row-2">
+                                    <div class="admin-form-group">
+                                        <label for="profileLocation">Location</label>
+                                        <input type="text" id="profileLocation" placeholder="San Francisco, CA (Open to Remote)">
+                                    </div>
+                                    <div class="admin-form-group">
+                                        <label for="profileHeroBadge">Hero Badge Text</label>
+                                        <input type="text" id="profileHeroBadge" placeholder="Open for Internships & Projects">
+                                    </div>
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="profileTypewriterRoles">Typewriter Roles / Skills (Comma-separated, for typing hero text)</label>
+                                    <input type="text" id="profileTypewriterRoles" placeholder="e.g. Digital Marketing Student, SEO Strategist, Social Media Manager, Content Creator">
+                                </div>
+                                <div class="form-row-2">
+                                    <div class="admin-form-group">
+                                        <label for="profileEducation">Education Highlight</label>
+                                        <input type="text" id="profileEducation" placeholder="BS in Business Marketing (Expected 2027)">
+                                    </div>
+                                    <div class="admin-form-group">
+                                        <label for="profileAvailability">Availability Highlight</label>
+                                        <input type="text" id="profileAvailability" placeholder="Summer Internships & Freelance">
+                                    </div>
+                                </div>
+                                <div class="form-row-2">
+                                    <div class="admin-form-group">
+                                        <label for="profileExpYears">Experience Badge Number (e.g. 1+)</label>
+                                        <input type="text" id="profileExpYears" placeholder="1+">
+                                    </div>
+                                    <div class="admin-form-group">
+                                        <label for="profileExpLabel">Experience Badge Description</label>
+                                        <input type="text" id="profileExpLabel" placeholder="Year of Practical Learning">
+                                    </div>
+                                </div>
+                                <div class="form-actions-right">
+                                    <button type="submit" class="btn-admin btn-admin-primary">
+                                        <i class="fa-solid fa-floppy-disk"></i> Save Profile Settings
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Right Side Profile Picture Path Setup -->
+                        <div class="dashboard-card card-col-4 text-center">
+                            <div class="card-header">
+                                <h3>Profile Photo</h3>
+                                <p>Set your professional headshot file path.</p>
+                            </div>
+                            
+                            <div class="photo-upload-wrapper">
+                                <div class="avatar-preview-container">
+                                    <img id="avatarPreview" src="assets/images/placeholder.jpg" alt="Avatar Preview" class="avatar-preview" onerror="this.src='assets/images/placeholder.jpg'; this.onerror=null;">
+                                </div>
+                                
+                                <form id="photoPathForm" class="dashboard-form" style="width: 100%; text-align: left;">
+                                    <div class="admin-form-group">
+                                        <label for="profilePhotoPath">Profile Image Path</label>
+                                        <input type="text" id="profilePhotoPath" placeholder="assets/images/profile/student-photo.jpg">
+                                        <span class="field-hint">Upload your image inside the GitHub <code>assets/images/profile/</code> folder, then paste the file path here.</span>
+                                    </div>
+                                    
+                                    <button type="submit" id="saveAvatarPathBtn" class="btn-admin btn-admin-primary btn-block-admin">
+                                        <i class="fa-solid fa-link"></i> Update Photo Path
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ------------------------------------------
+                     TAB 2: SKILLS & TOOLS
+                     ------------------------------------------ -->
+                <div id="tab-skills" class="tab-pane">
+                    <div class="dashboard-grid">
+                        
+                        <!-- Add/Edit Skill Form -->
+                        <div class="dashboard-card card-col-4">
+                            <div class="card-header">
+                                <h3 id="skillFormTitle">Add New Skill</h3>
+                                <p>Specify marketing skills and proficiency levels.</p>
+                            </div>
+                            <form id="skillForm" class="dashboard-form">
+                                <input type="hidden" id="editSkillId">
+                                <div class="admin-form-group">
+                                    <label for="skillName">Skill / Tool Name</label>
+                                    <input type="text" id="skillName" placeholder="e.g. Google Ads" required>
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="skillLevel">Proficiency Level (%)</label>
+                                    <div class="range-slider-wrapper">
+                                        <input type="range" id="skillLevel" min="10" max="100" value="80" step="5">
+                                        <span id="skillLevelVal" class="slider-badge-val">80%</span>
+                                    </div>
+                                </div>
+                                <div class="form-actions-right">
+                                    <button type="button" id="cancelSkillEditBtn" class="btn-admin btn-admin-secondary" style="display: none;">Cancel</button>
+                                    <button type="submit" id="saveSkillBtn" class="btn-admin btn-admin-primary">Add Skill</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Skills Table List -->
+                        <div class="dashboard-card card-col-8">
+                            <div class="card-header">
+                                <h3>Active Skills List</h3>
+                                <p>Manage the dynamic skill cards grid rendered on your portfolio.</p>
+                            </div>
+                            
+                            <div class="table-wrapper">
+                                <table class="admin-table" id="skillsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Skill Name</th>
+                                            <th>Proficiency</th>
+                                            <th style="width: 150px; text-align: center;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="skillsTableBody">
+                                        <!-- Dynamic rows will be loaded by script -->
+                                        <tr>
+                                            <td colspan="3" class="text-center text-muted">No skills found. Add a skill from the left form.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ------------------------------------------
+                     TAB 3: PROJECTS / WORK
+                     ------------------------------------------ -->
+                <div id="tab-projects" class="tab-pane">
+                    <div class="dashboard-grid">
+                        
+                        <!-- Projects Editor Card -->
+                        <div class="dashboard-card card-col-5">
+                            <div class="card-header">
+                                <h3 id="projectFormTitle">Add New Project</h3>
+                                <p>Highlight campaigns, SEO audits, or design work.</p>
+                            </div>
+                            <form id="projectForm" class="dashboard-form">
+                                <input type="hidden" id="editProjectId">
+                                
+                                <div class="admin-form-group">
+                                    <label for="projectTitle">Project Title</label>
+                                    <input type="text" id="projectTitle" placeholder="e.g. Local Bakery SEO Audit" required>
+                                </div>
+                                
+                                <div class="admin-form-group">
+                                    <label for="projectDescription">Short Description</label>
+                                    <textarea id="projectDescription" rows="3" placeholder="A comprehensive SEO audit covering local business ranking improvements..." required></textarea>
+                                </div>
+                                
+                                <div class="admin-form-group">
+                                    <label for="projectTools">Tools Used (comma separated)</label>
+                                    <input type="text" id="projectTools" placeholder="e.g. SEMrush, Screaming Frog, Excel" required>
+                                </div>
+
+                                <div class="admin-form-group">
+                                    <label for="projectLink">Project Link (External URL / Case study link)</label>
+                                    <input type="url" id="projectLink" placeholder="e.g. https://github.com/my-case-study">
+                                </div>
+
+                                <div class="admin-form-group">
+                                    <label for="projectImagePath">Project Image Path</label>
+                                    <input type="text" id="projectImagePath" placeholder="assets/images/projects/project-image.jpg">
+                                    <span class="field-hint">Upload your image inside the GitHub <code>assets/images/projects/</code> folder, then paste the file path here.</span>
+                                    
+                                    <!-- Image Preview Thumbnail -->
+                                    <div class="thumbnail-preview-container" id="projectThumbnailBox" style="display: none; margin-top: 1rem;">
+                                        <img id="projectThumbnail" src="" alt="Thumbnail Preview" class="thumbnail-preview" onerror="this.src='assets/images/placeholder.jpg'; this.onerror=null;">
+                                    </div>
+                                </div>
+
+                                <div class="form-actions-right">
+                                    <button type="button" id="cancelProjectEditBtn" class="btn-admin btn-admin-secondary" style="display: none;">Cancel</button>
+                                    <button type="submit" id="saveProjectBtn" class="btn-admin btn-admin-primary">Add Project</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Projects Cards Grid -->
+                        <div class="dashboard-card card-col-7">
+                            <div class="card-header">
+                                <h3>Active Projects List</h3>
+                                <p>These case studies appear dynamically inside cards on your website.</p>
+                            </div>
+                            
+                            <div class="admin-projects-list" id="projectsList">
+                                <!-- Dynamic project list cards -->
+                                <div class="text-center text-muted card-empty">No projects added yet. Add a project from the editor form.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ------------------------------------------
+                     TAB 4: CERTIFICATIONS
+                     ------------------------------------------ -->
+                <div id="tab-certificates" class="tab-pane">
+                    <div class="dashboard-grid">
+                        
+                        <!-- Add/Edit Certificate Form -->
+                        <div class="dashboard-card card-col-5">
+                            <div class="card-header">
+                                <h3 id="certFormTitle">Add Certificate</h3>
+                                <p>Show off credentials and learning milestones.</p>
+                            </div>
+                            <form id="certForm" class="dashboard-form">
+                                <input type="hidden" id="editCertId">
+                                
+                                <div class="admin-form-group">
+                                    <label for="certName">Certificate Name</label>
+                                    <input type="text" id="certName" placeholder="e.g. Fundamentals of Digital Marketing" required>
+                                </div>
+
+                                <div class="admin-form-group">
+                                    <label for="certIssuer">Issuing Organization</label>
+                                    <input type="text" id="certIssuer" placeholder="e.g. Google Digital Garage" required>
+                                </div>
+
+                                <div class="form-row-2">
+                                    <div class="admin-form-group">
+                                        <label for="certDate">Issue Date / Info</label>
+                                        <input type="text" id="certDate" placeholder="e.g. Issued: Jan 2026" required>
+                                    </div>
+                                    <div class="admin-form-group">
+                                        <label for="certLink">Verification Link (optional)</label>
+                                        <input type="url" id="certLink" placeholder="e.g. https://url-to-certificate">
+                                    </div>
+                                </div>
+
+                                <div class="admin-form-group">
+                                    <label for="certFilePath">Certificate Image or PDF Path</label>
+                                    <input type="text" id="certFilePath" placeholder="assets/images/certificates/certificate.jpg">
+                                    <span class="field-hint">Upload your certificate inside the GitHub <code>assets/images/certificates/</code> folder, then paste the file path here.</span>
+                                </div>
+
+                                <div class="form-actions-right">
+                                    <button type="button" id="cancelCertEditBtn" class="btn-admin btn-admin-secondary" style="display: none;">Cancel</button>
+                                    <button type="submit" id="saveCertBtn" class="btn-admin btn-admin-primary">Add Certificate</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Active Certificates Table -->
+                        <div class="dashboard-card card-col-7">
+                            <div class="card-header">
+                                <h3>Active Certifications List</h3>
+                                <p>Manage and link your credentials.</p>
+                            </div>
+                            
+                            <div class="table-wrapper">
+                                <table class="admin-table" id="certsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Credentials</th>
+                                            <th>Date Info</th>
+                                            <th style="width: 150px; text-align: center;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="certsTableBody">
+                                        <tr>
+                                            <td colspan="3" class="text-center text-muted">No certificates found. Add one from the form.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ------------------------------------------
+                     TAB 5: CV MANAGEMENT
+                     ------------------------------------------ -->
+                <div id="tab-cv" class="tab-pane">
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card card-col-6">
+                            <div class="card-header">
+                                <h3>Curriculum Vitae (CV) File Path</h3>
+                                <p>Set the path to your professional resume PDF document.</p>
+                            </div>
+                            
+                            <form id="cvForm" class="dashboard-form">
+                                <div class="admin-form-group">
+                                    <label for="cvPath">CV File Path</label>
+                                    <input type="text" id="cvPath" placeholder="assets/cv/student-cv.pdf" required>
+                                    <span class="field-hint">Upload your CV PDF inside the GitHub <code>assets/cv/</code> folder, then paste the file path here.</span>
+                                </div>
+                                
+                                <div class="form-actions-right">
+                                    <button type="submit" class="btn-admin btn-admin-primary btn-block-admin">
+                                        <i class="fa-solid fa-link"></i> Update CV Path
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Current CV Status Card -->
+                        <div class="dashboard-card card-col-6">
+                            <div class="card-header">
+                                <h3>Current CV File Status</h3>
+                                <p>This path links to the "Download CV" action button on your portfolio page.</p>
+                            </div>
+                            <div class="cv-status-box" id="cvStatusBox">
+                                <div class="cv-icon-display"><i class="fa-solid fa-file-pdf"></i></div>
+                                <h4>CV Path Configured</h4>
+                                <p>Your resume relative file path is saved and active.</p>
+                                <a href="#" id="currentCvLink" target="_blank" class="btn-admin btn-admin-outline">
+                                    <i class="fa-solid fa-download"></i> View Connected CV Link
+                                </a>
+                            </div>
+                            
+                            <div class="cv-status-box empty" id="cvStatusBoxEmpty" style="display: none;">
+                                <div class="cv-icon-display error"><i class="fa-solid fa-circle-xmark"></i></div>
+                                <h4>No CV Connected</h4>
+                                <p>Please enter a CV file path using the configuration form to activate the download button.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ------------------------------------------
+                     TAB 6: SOCIALS & CONTACT
+                     ------------------------------------------ -->
+                <div id="tab-socials" class="tab-pane">
+                    <form id="socialsForm" class="dashboard-form">
+                        <div class="dashboard-grid">
+                            
+                            <!-- Social Profile Links Card -->
+                            <div class="dashboard-card card-col-6">
+                                <div class="card-header">
+                                    <h3>Social Profile Links</h3>
+                                    <p>URLs of your social media profiles, rendered in the navbar and footers.</p>
+                                </div>
+                                
+                                <div class="admin-form-group">
+                                    <label for="socialLinkedin"><i class="fa-brands fa-linkedin text-linkedin"></i> LinkedIn URL</label>
+                                    <input type="url" id="socialLinkedin" placeholder="https://linkedin.com/in/username">
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="socialInstagram"><i class="fa-brands fa-instagram text-instagram"></i> Instagram URL</label>
+                                    <input type="url" id="socialInstagram" placeholder="https://instagram.com/username">
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="socialFacebook"><i class="fa-brands fa-facebook text-facebook"></i> Facebook URL</label>
+                                    <input type="url" id="socialFacebook" placeholder="https://facebook.com/username">
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="socialTiktok"><i class="fa-brands fa-tiktok text-tiktok"></i> TikTok URL</label>
+                                    <input type="url" id="socialTiktok" placeholder="https://tiktok.com/@username">
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="socialYoutube"><i class="fa-brands fa-youtube text-youtube"></i> YouTube URL</label>
+                                    <input type="url" id="socialYoutube" placeholder="https://youtube.com/c/channelname">
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="socialGithub"><i class="fa-brands fa-github text-github"></i> GitHub URL</label>
+                                    <input type="url" id="socialGithub" placeholder="https://github.com/username">
+                                </div>
+                            </div>
+
+                            <!-- Contact Details Card -->
+                            <div class="dashboard-card card-col-6">
+                                <div class="card-header">
+                                    <h3>Contact Information</h3>
+                                    <p>Direct contact credentials visible in your bio card and footer.</p>
+                                </div>
+                                
+                                <div class="admin-form-group">
+                                    <label for="contactEmail"><i class="fa-solid fa-envelope text-muted"></i> Public Email Address</label>
+                                    <input type="email" id="contactEmail" placeholder="alex.marketing@gmail.com" required>
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="contactPhone"><i class="fa-solid fa-phone text-muted"></i> Phone Number</label>
+                                    <input type="tel" id="contactPhone" placeholder="+1 (555) 0199">
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="contactWhatsapp"><i class="fa-brands fa-whatsapp text-whatsapp"></i> WhatsApp Link (Number only)</label>
+                                    <input type="text" id="contactWhatsapp" placeholder="15550199 (No +, spaces, or leading zeros)">
+                                    <span class="field-hint">e.g. 15550199 to open chat directly.</span>
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="contactAddress"><i class="fa-solid fa-location-dot text-muted"></i> Physical Address / Base Location</label>
+                                    <input type="text" id="contactAddress" placeholder="San Francisco, California">
+                                </div>
+                                
+                                <div class="form-actions-right" style="margin-top: 5rem;">
+                                    <button type="submit" class="btn-admin btn-admin-primary btn-block-admin">
+                                        <i class="fa-solid fa-floppy-disk"></i> Save Socials & Contact
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- ------------------------------------------
+                     TAB 7: EXPERIENCE TIMELINE
+                     ------------------------------------------ -->
+                <div id="tab-experience" class="tab-pane">
+                    <div class="dashboard-grid">
+                        <!-- Experience Editor Form -->
+                        <div class="dashboard-card card-col-5">
+                            <div class="card-header">
+                                <h3 id="experienceFormTitle">Add New Experience</h3>
+                                <p>Provide details of your jobs, training, or internships.</p>
+                            </div>
+                            <form id="experienceForm" class="dashboard-form">
+                                <input type="hidden" id="editExperienceId" value="">
+                                
+                                <div class="admin-form-group">
+                                    <label for="experienceRole">Job Title / Role</label>
+                                    <input type="text" id="experienceRole" placeholder="e.g. Social Media Intern" required>
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="experienceCompany">Company / Academy</label>
+                                    <input type="text" id="experienceCompany" placeholder="e.g. BrightMedia Agency" required>
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="experienceDuration">Duration / Time Period</label>
+                                    <input type="text" id="experienceDuration" placeholder="e.g. Mar 2026 - May 2026" required>
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="experienceDescription">Description / Key Achievements</label>
+                                    <textarea id="experienceDescription" rows="5" placeholder="e.g. Managed content calendars, ran paid ads, grew engagement by 22%..." required></textarea>
+                                </div>
+                                
+                                <div class="form-actions-right">
+                                    <button type="button" id="cancelExperienceEditBtn" class="btn-admin btn-admin-secondary" style="display: none;">Cancel</button>
+                                    <button type="submit" id="saveExperienceBtn" class="btn-admin btn-admin-primary">Add Experience</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Experience History List -->
+                        <div class="dashboard-card card-col-7">
+                            <div class="card-header">
+                                <h3>Experience History</h3>
+                                <p>Manage your professional history timeline cards.</p>
+                            </div>
+                            
+                            <div class="table-wrapper">
+                                <table class="admin-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Role & Company</th>
+                                            <th>Duration</th>
+                                            <th style="text-align: center;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="experienceTableBody">
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ------------------------------------------
+                     TAB 8: TESTIMONIALS FEEDBACK
+                     ------------------------------------------ -->
+                <div id="tab-testimonials" class="tab-pane">
+                    <div class="dashboard-grid">
+                        <!-- Testimonials Editor Form -->
+                        <div class="dashboard-card card-col-5">
+                            <div class="card-header">
+                                <h3 id="testimonialFormTitle">Add Testimonial</h3>
+                                <p>Input feedback from college professors, internship supervisors, or clients.</p>
+                            </div>
+                            <form id="testimonialForm" class="dashboard-form">
+                                <input type="hidden" id="editTestimonialId" value="">
+                                
+                                <div class="admin-form-group">
+                                    <label for="testimonialName">Recommender's Name</label>
+                                    <input type="text" id="testimonialName" placeholder="e.g. Dr. Sarah Jenkins" required>
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="testimonialRole">Recommender's Position / Relationship</label>
+                                    <input type="text" id="testimonialRole" placeholder="e.g. Head of Marketing Dept, University" required>
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="testimonialText">Testimonial Quote</label>
+                                    <textarea id="testimonialText" rows="6" placeholder="e.g. Alex is an incredibly proactive student who displays amazing campaign research depth..." required></textarea>
+                                </div>
+                                
+                                <div class="form-actions-right">
+                                    <button type="button" id="cancelTestimonialEditBtn" class="btn-admin btn-admin-secondary" style="display: none;">Cancel</button>
+                                    <button type="submit" id="saveTestimonialBtn" class="btn-admin btn-admin-primary">Add Testimonial</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Testimonials List -->
+                        <div class="dashboard-card card-col-7">
+                            <div class="card-header">
+                                <h3>Testimonials List</h3>
+                                <p>Manage student recommendation cards rendered on the homepage.</p>
+                            </div>
+                            
+                            <div class="table-wrapper">
+                                <table class="admin-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name & Title</th>
+                                            <th>Feedback Snippet</th>
+                                            <th style="text-align: center;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="testimonialTableBody">
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ------------------------------------------
+                     TAB 8: CHOOSE PORTFOLIO TEMPLATE
+                     ------------------------------------------ -->
+                <div id="tab-templates" class="tab-pane">
+                    <div class="dashboard-card card-full">
+                        <div class="card-header">
+                            <h3>Choose Portfolio Template</h3>
+                            <p>Select a visual layout design for your public portfolio website. All designs adapt to your student data dynamically.</p>
+                        </div>
+                        
+                        <div class="templates-selection-grid">
+                            <!-- Template 1: Modern Gradient -->
+                            <div class="template-choice-card" data-template="template-modern">
+                                <div class="template-preview-mockup mockup-modern">
+                                    <div class="mockup-header"></div>
+                                    <div class="mockup-hero">
+                                        <div class="mockup-hero-text"></div>
+                                        <div class="mockup-hero-circle"></div>
+                                    </div>
+                                    <div class="mockup-cards">
+                                        <div class="mockup-card"></div>
+                                        <div class="mockup-card"></div>
+                                    </div>
+                                </div>
+                                <div class="template-choice-info">
+                                    <h4>Modern Gradient</h4>
+                                    <p>Vibrant digital marketing design featuring a dark slate base, smooth colorful gradients, and rounded cards. Perfect for a striking, modern look.</p>
+                                    <div class="template-choice-actions">
+                                        <button class="btn-admin btn-admin-outline btn-select-template" data-template="template-modern">Select Design</button>
+                                        <span class="active-template-badge">Currently Selected</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Template 2: Minimal Clean -->
+                            <div class="template-choice-card" data-template="template-minimal">
+                                <div class="template-preview-mockup mockup-minimal">
+                                    <div class="mockup-header"></div>
+                                    <div class="mockup-hero">
+                                        <div class="mockup-hero-text"></div>
+                                        <div class="mockup-hero-avatar"></div>
+                                    </div>
+                                    <div class="mockup-cards">
+                                        <div class="mockup-card"></div>
+                                        <div class="mockup-card"></div>
+                                    </div>
+                                </div>
+                                <div class="template-choice-info">
+                                    <h4>Minimal Clean</h4>
+                                    <p>Ultra-clean layout with a crisp light slate background, bold sans-serif/serif headings, sharp square cards, and zero distractions. Ideal for formal job searches.</p>
+                                    <div class="template-choice-actions">
+                                        <button class="btn-admin btn-admin-outline btn-select-template" data-template="template-minimal">Select Design</button>
+                                        <span class="active-template-badge">Currently Selected</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Template 3: Dark Neon -->
+                            <div class="template-choice-card" data-template="template-dark">
+                                <div class="template-preview-mockup mockup-dark">
+                                    <div class="mockup-header"></div>
+                                    <div class="mockup-hero">
+                                        <div class="mockup-hero-text"></div>
+                                        <div class="mockup-hero-glow"></div>
+                                    </div>
+                                    <div class="mockup-cards">
+                                        <div class="mockup-card"></div>
+                                        <div class="mockup-card"></div>
+                                    </div>
+                                </div>
+                                <div class="template-choice-info">
+                                    <h4>Dark Neon</h4>
+                                    <p>Tech-focused theme featuring a deep black backdrop, neon purple and cyan highlight accents, and glowing card borders. Great for SEO and tech marketing.</p>
+                                    <div class="template-choice-actions">
+                                        <button class="btn-admin btn-admin-outline btn-select-template" data-template="template-dark">Select Design</button>
+                                        <span class="active-template-badge">Currently Selected</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Template 4: Creative Agency -->
+                            <div class="template-choice-card" data-template="template-creative">
+                                <div class="template-preview-mockup mockup-creative">
+                                    <div class="mockup-header"></div>
+                                    <div class="mockup-hero">
+                                        <div class="mockup-hero-text"></div>
+                                        <div class="mockup-hero-box"></div>
+                                    </div>
+                                    <div class="mockup-cards">
+                                        <div class="mockup-card"></div>
+                                        <div class="mockup-card"></div>
+                                    </div>
+                                </div>
+                                <div class="template-choice-info">
+                                    <h4>Creative Agency</h4>
+                                    <p>Bold, high-impact branding styled like a creative boutique agency. Large offset shadows, thick black borders, and mismatched colors. Perfect for social media creators.</p>
+                                    <div class="template-choice-actions">
+                                        <button class="btn-admin btn-admin-outline btn-select-template" data-template="template-creative">Select Design</button>
+                                        <span class="active-template-badge">Currently Selected</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Template 5: Corporate Professional -->
+                            <div class="template-choice-card" data-template="template-corporate">
+                                <div class="template-preview-mockup mockup-corporate">
+                                    <div class="mockup-header"></div>
+                                    <div class="mockup-hero">
+                                        <div class="mockup-hero-text"></div>
+                                        <div class="mockup-hero-banner"></div>
+                                    </div>
+                                    <div class="mockup-cards">
+                                        <div class="mockup-card"></div>
+                                        <div class="mockup-card"></div>
+                                    </div>
+                                </div>
+                                <div class="template-choice-info">
+                                    <h4>Corporate Professional</h4>
+                                    <p>Structured, corporate design using trustworthy navy and neutral gray tones. Offers clean typography, formal section headers, and double-border frames. Best for job market interviews.</p>
+                                    <div class="template-choice-actions">
+                                        <button class="btn-admin btn-admin-outline btn-select-template" data-template="template-corporate">Select Design</button>
+                                        <span class="active-template-badge">Currently Selected</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Template 6: Personal Brand -->
+                            <div class="template-choice-card" data-template="template-personal-brand">
+                                <div class="template-preview-mockup mockup-personal-brand">
+                                    <div class="mockup-header"></div>
+                                    <div class="mockup-hero">
+                                        <div class="mockup-hero-circle"></div>
+                                    </div>
+                                    <div class="mockup-hero-text" style="width: 80%; margin: 4px auto 0;"></div>
+                                    <div class="mockup-cards">
+                                        <div class="mockup-card"></div>
+                                        <div class="mockup-card"></div>
+                                    </div>
+                                </div>
+                                <div class="template-choice-info">
+                                    <h4>Personal Brand</h4>
+                                    <p>Centered storytelling layout with a focus on personal branding. Features large profile frames, elegant headings, storytelling blocks, and round skill badges. Ideal for building an influencer style presence.</p>
+                                    <div class="template-choice-actions">
+                                        <button class="btn-admin btn-admin-outline btn-select-template" data-template="template-personal-brand">Select Design</button>
+                                        <span class="active-template-badge">Currently Selected</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Template 7: Marketing Resume -->
+                            <div class="template-choice-card" data-template="template-marketing-resume">
+                                <div class="template-preview-mockup mockup-marketing-resume">
+                                    <div class="mockup-resume-cols">
+                                        <div class="mockup-resume-left">
+                                            <div class="mockup-resume-dot"></div>
+                                            <div class="mockup-resume-bar"></div>
+                                            <div class="mockup-resume-bar"></div>
+                                        </div>
+                                        <div class="mockup-resume-right">
+                                            <div class="mockup-resume-line"></div>
+                                            <div class="mockup-resume-line"></div>
+                                            <div class="mockup-resume-line"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="template-choice-info">
+                                    <h4>Marketing Resume</h4>
+                                    <p>Structured online CV layout with a sidebar for skills and details, and a wide main column for experience, certificates, and projects. Highly optimized for recruiters and job placement.</p>
+                                    <div class="template-choice-actions">
+                                        <button class="btn-admin btn-admin-outline btn-select-template" data-template="template-marketing-resume">Select Design</button>
+                                        <span class="active-template-badge">Currently Selected</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Template 8: Portfolio Grid -->
+                            <div class="template-choice-card" data-template="template-portfolio-grid">
+                                <div class="template-preview-mockup mockup-portfolio-grid">
+                                    <div class="mockup-header"></div>
+                                    <div class="mockup-grid-items">
+                                        <div class="mockup-grid-item"></div>
+                                        <div class="mockup-grid-item"></div>
+                                        <div class="mockup-grid-item"></div>
+                                        <div class="mockup-grid-item"></div>
+                                    </div>
+                                </div>
+                                <div class="template-choice-info">
+                                    <h4>Portfolio Grid</h4>
+                                    <p>Visual grid layout putting projects first. Small hero introduction, followed by a large image masonry grid of campaign samples, visual cards, and minimal details. Perfect for designers and visual marketers.</p>
+                                    <div class="template-choice-actions">
+                                        <button class="btn-admin btn-admin-outline btn-select-template" data-template="template-portfolio-grid">Select Design</button>
+                                        <span class="active-template-badge">Currently Selected</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Template 9: SEO Specialist -->
+                            <div class="template-choice-card" data-template="template-seo-specialist">
+                                <div class="template-preview-mockup mockup-seo-specialist">
+                                    <div class="mockup-seo-stats">
+                                        <div class="mockup-seo-stat"></div>
+                                        <div class="mockup-seo-stat"></div>
+                                        <div class="mockup-seo-stat"></div>
+                                    </div>
+                                    <div class="mockup-seo-bar"></div>
+                                    <div class="mockup-seo-bar"></div>
+                                </div>
+                                <div class="template-choice-info">
+                                    <h4>SEO Specialist</h4>
+                                    <p>Dashboard analytics design showcasing stats cards for SEO, Ads, Content, and Analytics. Highlights performance graphs, case audits, progress meters, and trust badges. Best for data-driven marketers.</p>
+                                    <div class="template-choice-actions">
+                                        <button class="btn-admin btn-admin-outline btn-select-template" data-template="template-seo-specialist">Select Design</button>
+                                        <span class="active-template-badge">Currently Selected</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Template 10: Social Media Creator -->
+                            <div class="template-choice-card" data-template="template-social-creator">
+                                <div class="template-preview-mockup mockup-social-creator">
+                                    <div class="mockup-social-header">
+                                        <div class="mockup-social-avatar"></div>
+                                        <div class="mockup-social-user"></div>
+                                    </div>
+                                    <div class="mockup-social-posts">
+                                        <div class="mockup-social-post"></div>
+                                        <div class="mockup-social-post"></div>
+                                    </div>
+                                </div>
+                                <div class="template-choice-info">
+                                    <h4>Social Media Creator</h4>
+                                    <p>Vibrant social application theme inspired by mobile cards, user feeds, and content hubs. Features story-style certificates, social chip tags, and post engagement cards. Ideal for social media content strategists.</p>
+                                    <div class="template-choice-actions">
+                                        <button class="btn-admin btn-admin-outline btn-select-template" data-template="template-social-creator">Select Design</button>
+                                        <span class="active-template-badge">Currently Selected</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ==========================================
+         FIREBASE CORE & SERVICES (COMPAT SDK)
+         ========================================== -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Config file -->
+    <script src="firebase-config.js"></script>
+    
+    <!-- Admin Dashboard Logic -->
+    <script src="admin.js"></script>
+</body>
+</html>
